@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const { correctRecipients, correctMessage } = require('./utils');
+const { correctRecipients, recipientsList, correctMessage } = require('./utils');
 
 async function run() {
   try {
@@ -24,14 +24,25 @@ async function run() {
 
     const message = core.getInput('message');
 
-    if (match) {
-      const recipients = correctRecipients(match.split("=")[1]);
-      const comment = correctMessage(message, recipients, label);
-      const createCommentResponse = await octokit.issues.createComment({
-        owner,
-        repo,
-        issue_number: number,
-        body: comment
+    if (typeof github.context.payload.issue !== 'undefined') {
+      // const recipients = correctRecipients(match.split("=")[1]);
+      // const comment = correctMessage(message, recipients, label);
+      // const createCommentResponse = await octokit.issues.createComment({
+      //   owner,
+      //   repo,
+      //   issue_number: number,
+      //   body: comment
+      // });
+    } else if (typeof github.context.payload.pull_request !== 'undefined') {
+      // send request to reviewer
+      const recipients = recipientsList(match.split("=")[1]);
+      // console.log(`${recipients}, ${github.context.payload.pull_request.user.login} ${owner}`);
+      const requestReviewersResponse = await octokit.pulls.requestReviewers({
+        owner: owner,
+        repo: repo,
+        pull_number: number,
+        reviewers: recipients.filter(x => x !== github.context.payload.pull_request.user.login) || undefined,
+        team_reviewers: undefined
       });
     } else {
       console.log("No matching recipients found for label ${label}.");
