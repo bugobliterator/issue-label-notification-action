@@ -15,7 +15,7 @@ async function run() {
     console.log(`Check for ${label}, state = ${state}`);
     if (github.context.payload.pull_request.state === "closed") {
       //
-      console.log(`pr is closed`)
+      console.log(`pr is closed`);
     }
 
 
