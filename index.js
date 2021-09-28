@@ -6,7 +6,7 @@ async function run() {
   try {
     number = github.context.payload.pull_request.number;
     if (github.context.payload.pull_request.state !== 'closed'){
-      return;
+      throw "";
     }
 
     const owner = github.context.repo.owner;
