@@ -4,11 +4,11 @@ const { correctRecipients, correctMessage } = require('./utils');
 
 async function run() {
   try {
-    if (typeof github.context.payload.issue !== 'undefined') {
-      number = github.context.payload.issue.number;
-    } else if (typeof github.context.payload.pull_request !== 'undefined') {
-      number = github.context.payload.pull_request.number;
+    number = github.context.payload.pull_request.number;
+    if (github.context.payload.pull_request.state !== 'closed'){
+      return;
     }
+
     const owner = github.context.repo.owner;
     const repo = github.context.repo.repo;
     const label = github.context.payload.label.name;
