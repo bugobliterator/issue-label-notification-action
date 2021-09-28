@@ -3,10 +3,15 @@ const github = require('@actions/github');
 const { correctRecipients, correctMessage } = require('./utils');
 
 async function run() {
+  let number;
+  let state;
   try {
     number = github.context.payload.pull_request.number;
-    if (github.context.payload.pull_request.state !== 'closed'){
-      throw "";
+    state = github.context.payload.pull_request.state;
+
+    console.log("Check for {label}, state = {state}");
+    if (github.context.payload.pull_request.state !== 'closed') {
+      //
     }
 
     const owner = github.context.repo.owner;
