@@ -12,10 +12,10 @@ async function run() {
     const repo = github.context.repo.repo;
     const label = github.context.payload.label.name;
 
-    console.log(`Check for ${label}, state = ${state}`);
+    core.info(`Check for ${label}, state = ${state}`);
     if (github.context.payload.pull_request.state === "closed") {
       //
-      console.log(`pr is closed`);
+      core.info(`pr is closed`);
     }
 
 
@@ -41,7 +41,7 @@ async function run() {
         body: comment
       });
     } else {
-      console.log(`No matching recipients found for label ${label}.`);
+      core.info(`No matching recipients found for label ${label}.`);
     }
   } catch (error) {
     console.error(error);
