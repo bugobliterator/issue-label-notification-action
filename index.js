@@ -8,15 +8,17 @@ async function run() {
   try {
     number = github.context.payload.pull_request.number;
     state = github.context.payload.pull_request.state;
-
-    console.log("Check for {label}, state = {state}");
-    if (github.context.payload.pull_request.state !== 'closed') {
-      //
-    }
-
     const owner = github.context.repo.owner;
     const repo = github.context.repo.repo;
     const label = github.context.payload.label.name;
+
+    console.log(`Check for ${label}, state = ${state}`);
+    if (github.context.payload.pull_request.state === "closed") {
+      //
+      console.log(`pr is closed`)
+    }
+
+
 
     // https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
     const token = core.getInput('token');
@@ -39,7 +41,7 @@ async function run() {
         body: comment
       });
     } else {
-      console.log("No matching recipients found for label ${label}.");
+      console.log(`No matching recipients found for label ${label}.`);
     }
   } catch (error) {
     console.error(error);
