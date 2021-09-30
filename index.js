@@ -41,7 +41,7 @@ async function run() {
         body: comment
       });
     } else {
-      core.info(`No matching recipients found for label ${label}.`);
+      core.info(`Oups, no matching recipients found for label ${label}.`);
     }
   } catch (error) {
     console.error(error);
